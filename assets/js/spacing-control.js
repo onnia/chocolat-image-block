@@ -57,7 +57,7 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	return settings;
 };
 
-addFilter( 'blocks.registerBlockType', 'extend-block-example/attribute/spacing', addSpacingControlAttribute );
+addFilter( 'blocks.registerBlockType', 'chocolat-image-block/attribute/spacing', addSpacingControlAttribute );
 
 /**
  * Create HOC to add spacing control to inspector controls of block.
@@ -103,7 +103,7 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 	};
 }, 'withSpacingControl' );
 
-addFilter( 'editor.BlockEdit', 'extend-block-example/with-spacing-control', withSpacingControl );
+addFilter( 'editor.BlockEdit', 'chocolat-image-block/with-spacing-control', withSpacingControl );
 
 /**
  * Add margin style attribute to save element of block.
@@ -134,4 +134,4 @@ const addSpacingExtraProps = ( saveElementProps, blockType, attributes ) => {
 	return saveElementProps;
 };
 
-addFilter( 'blocks.getSaveContent.extraProps', 'extend-block-example/get-save-content/extra-props', addSpacingExtraProps );
+addFilter( 'blocks.getSaveContent.extraProps', 'chocolat-image-block/get-save-content/extra-props', addSpacingExtraProps );

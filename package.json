@@ -1,10 +1,10 @@
 {
-	"name": "extend-block-example",
+	"name": "chocolat-image-block",
 	"version": "1.0.0",
 	"description": "Example how to extend an existing Gutenberg block",
 	"scripts": {
-		"start": "parcel watch --no-hmr assets/js/extend-block-example.js -d dist",
-		"build": "parcel build assets/js/extend-block-example.js -d dist",
+		"start": "parcel watch --no-hmr assets/js/chocolat-image-block.js -d dist",
+		"build": "parcel build assets/js/chocolat-image-block.js -d dist",
 		"lint": "eslint assets/js"
 	},
 	"author": "Liip AG",
