@@ -16,19 +16,11 @@ const enableSpacingControlOnBlocks = [
 const spacingControlOptions = [
 	{
 		label: __( 'None' ),
-		value: '',
+		value: false,
 	},
 	{
-		label: __( 'Small' ),
-		value: 'small',
-	},
-	{
-		label: __( 'Medium' ),
-		value: 'medium',
-	},
-	{
-		label: __( 'Large' ),
-		value: 'large',
+		label: __( 'Choco' ),
+		value: true,
 	},
 ];
 
@@ -49,8 +41,8 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	// Use Lodash's assign to gracefully handle if attributes are undefined
 	settings.attributes = assign( settings.attributes, {
 		spacing: {
-			type: 'string',
-			default: spacingControlOptions[ 0 ].value,
+			type: 'boolean',
+			default: false,
 		},
 	} );
 
@@ -73,6 +65,9 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 
 		const { spacing } = props.attributes;
 
+		// console.log(props);
+		// console.log(props.attributes);
+
 		// add has-spacing-xy class to block
 		if ( spacing ) {
 			props.attributes.className = `has-spacing-${ spacing }`;
@@ -83,7 +78,7 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit { ...props } />
 				<InspectorControls>
 					<PanelBody
-						title={ __( 'My Spacing Control' ) }
+						title={ __( 'Chocolot image' ) }
 						initialOpen={ true }
 					>
 						<SelectControl
