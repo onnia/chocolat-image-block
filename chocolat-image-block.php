@@ -35,15 +35,11 @@ add_action('wp_enqueue_scripts', 'enqueue_scripts', 20);
 
 function enqueue_scripts() {
     wp_enqueue_script('lazyload', 'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.6.0/lazyload.min.js');
-    wp_enqueue_script(
-        'chocolat-js',
-        esc_url( plugins_url( '/dist/chocolat-image-block.js', __FILE__ ) ),
-        [],
-        '1.0.0',
-        true,
-    );
-    //  get_stylesheet_directory_uri() . '/Chocolat-1.0.4/dist/js/chocolat.iife.js');
-    // dd(get_stylesheet_directory_uri());
+    wp_enqueue_script('chocolat-js', 'https://cdnjs.cloudflare.com/ajax/libs/chocolat/0.4.19/js/jquery.chocolat.min.js');
+
+    /**
+     * TODO: Init Chocolat gallery.
+     */
 }
 
 
