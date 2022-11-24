@@ -13,13 +13,13 @@ const enableSpacingControlOnBlocks = [
 ];
 
 // Available spacing control options
-const spacingControlOptions = [
+const chocolatControlOptions = [
 	{
 		label: __( 'None' ),
 		value: false,
 	},
 	{
-		label: __( 'Choco' ),
+		label: __( 'Chocolat wrapper' ),
 		value: true,
 	},
 ];
@@ -63,14 +63,14 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		const { spacing } = props.attributes;
+		const { spacing } = ( props.attributes.className === 'has-chocolat-wrapper' ? true : false );
 
-		// console.log(props);
-		// console.log(props.attributes);
 
 		// add has-spacing-xy class to block
-		if ( spacing ) {
-			props.attributes.className = `has-spacing-${ spacing }`;
+		if ( props.attributes.spacing ) {
+			props.attributes.className = 'has-chocolat-wrapper';
+			console.log('props.attributes')
+			console.log(props.attributes)
 		}
 
 		return (
@@ -78,16 +78,16 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit { ...props } />
 				<InspectorControls>
 					<PanelBody
-						title={ __( 'Chocolot image' ) }
+						title={ __( 'Apply Lightbox' ) }
 						initialOpen={ true }
 					>
 						<SelectControl
-							label={ __( 'Spacing' ) }
+							label={ __( 'Chocolat image' ) }
 							value={ spacing }
-							options={ spacingControlOptions }
-							onChange={ ( selectedSpacingOption ) => {
+							options={ chocolatControlOptions }
+							onChange={ ( selectedChocolatOption ) => {
 								props.setAttributes( {
-									spacing: selectedSpacingOption,
+									spacing: selectedChocolatOption,
 								} );
 							} }
 						/>
@@ -115,15 +115,13 @@ const addSpacingExtraProps = ( saveElementProps, blockType, attributes ) => {
 		return saveElementProps;
 	}
 
-	const margins = {
-		small: '5px',
-		medium: '15px',
-		large: '30px',
-	};
-
-	if ( attributes.spacing in margins ) {
+	if ( attributes.spacing === 'true' ) {
+		console.log('saveElementProps')
+		console.log(attributes.spacing)
+		console.log(saveElementProps)
+	
 		// Use Lodash's assign to gracefully handle if attributes are undefined
-		assign( saveElementProps, { style: { 'margin-bottom': margins[ attributes.spacing ] } } );
+		// assign( saveElementProps, { style: { 'margin-bottom': margins[ attributes.spacing ] } } );
 	}
 
 	return saveElementProps;

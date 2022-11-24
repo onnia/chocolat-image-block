@@ -18,6 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * wp_enqueue_script('chocolat-js', get_stylesheet_directory_uri() . '/Chocolat-0.4.19/src/js/jquery.chocolat.js', array('jquery'));
+  * wp_enqueue_script('chocolat-js', get_stylesheet_directory_uri() . '/Chocolat-1.0.4/dist/js/chocolat.iife.js');
+  
+ */
+
 add_action( 'enqueue_block_editor_assets', 'extend_block_example_enqueue_block_editor_assets' );
 
 function extend_block_example_enqueue_block_editor_assets() {
