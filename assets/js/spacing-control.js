@@ -40,7 +40,7 @@ const addSpacingControlAttribute = ( settings, name ) => {
 
 	// Use Lodash's assign to gracefully handle if attributes are undefined
 	settings.attributes = assign( settings.attributes, {
-		spacing: {
+		chocolat: {
 			type: 'boolean',
 			default: false,
 		},
@@ -63,14 +63,12 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		const { spacing } = ( props.attributes.className === 'has-chocolat-wrapper' ? true : false );
-
-
-		// add has-spacing-xy class to block
-		if ( props.attributes.spacing ) {
+		// const { chocolat } = props.attributes.chocolat;
+		// const chocolat = props.attributes.className === 'has-chocolat-wrapper' ? true : false;
+		const { chocolat } = props.attributes;
+	
+		if ( chocolat ) {
 			props.attributes.className = 'has-chocolat-wrapper';
-			console.log('props.attributes')
-			console.log(props.attributes)
 		}
 
 		return (
@@ -83,11 +81,12 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 					>
 						<SelectControl
 							label={ __( 'Chocolat image' ) }
-							value={ spacing }
+							value={ chocolat }
 							options={ chocolatControlOptions }
 							onChange={ ( selectedChocolatOption ) => {
 								props.setAttributes( {
-									spacing: selectedChocolatOption,
+									chocolat: selectedChocolatOption === 'true' ? true : false,
+									className: selectedChocolatOption === 'true' ? 'has-chocolat-wrapper' : '',
 								} );
 							} }
 						/>
@@ -115,13 +114,9 @@ const addSpacingExtraProps = ( saveElementProps, blockType, attributes ) => {
 		return saveElementProps;
 	}
 
-	if ( attributes.spacing === 'true' ) {
-		console.log('saveElementProps')
-		console.log(attributes.spacing)
-		console.log(saveElementProps)
-	
+	if ( attributes.chocolat ) {
 		// Use Lodash's assign to gracefully handle if attributes are undefined
-		// assign( saveElementProps, { style: { 'margin-bottom': margins[ attributes.spacing ] } } );
+		assign( saveElementProps, { chocolat: true } );
 	}
 
 	return saveElementProps;

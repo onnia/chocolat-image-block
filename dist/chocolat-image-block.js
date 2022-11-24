@@ -798,7 +798,7 @@ var addSpacingControlAttribute = function addSpacingControlAttribute(settings, n
 
 
   settings.attributes = (0, _lodash.default)(settings.attributes, {
-    spacing: {
+    chocolat: {
       type: 'boolean',
       default: false
     }
@@ -816,16 +816,14 @@ var withSpacingControl = createHigherOrderComponent(function (BlockEdit) {
     // Do nothing if it's another block than our defined ones.
     if (!enableSpacingControlOnBlocks.includes(props.name)) {
       return React.createElement(BlockEdit, props);
-    }
-
-    var _ref = props.attributes.className === 'has-chocolat-wrapper' ? true : false,
-        spacing = _ref.spacing; // add has-spacing-xy class to block
+    } // const { chocolat } = props.attributes.chocolat;
+    // const chocolat = props.attributes.className === 'has-chocolat-wrapper' ? true : false;
 
 
-    if (props.attributes.spacing) {
+    var chocolat = props.attributes.chocolat;
+
+    if (chocolat) {
       props.attributes.className = 'has-chocolat-wrapper';
-      console.log('props.attributes');
-      console.log(props.attributes);
     }
 
     return React.createElement(Fragment, null, React.createElement(BlockEdit, props), React.createElement(InspectorControls, null, React.createElement(PanelBody, {
@@ -833,11 +831,12 @@ var withSpacingControl = createHigherOrderComponent(function (BlockEdit) {
       initialOpen: true
     }, React.createElement(SelectControl, {
       label: __('Chocolat image'),
-      value: spacing,
+      value: chocolat,
       options: chocolatControlOptions,
       onChange: function onChange(selectedChocolatOption) {
         props.setAttributes({
-          spacing: selectedChocolatOption
+          chocolat: selectedChocolatOption === 'true' ? true : false,
+          className: selectedChocolatOption === 'true' ? 'has-chocolat-wrapper' : ''
         });
       }
     }))));
@@ -860,11 +859,11 @@ var addSpacingExtraProps = function addSpacingExtraProps(saveElementProps, block
     return saveElementProps;
   }
 
-  if (attributes.spacing === 'true') {
-    console.log('saveElementProps');
-    console.log(attributes.spacing);
-    console.log(saveElementProps); // Use Lodash's assign to gracefully handle if attributes are undefined
-    // assign( saveElementProps, { style: { 'margin-bottom': margins[ attributes.spacing ] } } );
+  if (attributes.chocolat) {
+    // Use Lodash's assign to gracefully handle if attributes are undefined
+    (0, _lodash.default)(saveElementProps, {
+      chocolat: true
+    });
   }
 
   return saveElementProps;
