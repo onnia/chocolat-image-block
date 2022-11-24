@@ -63,10 +63,7 @@ const withSpacingControl = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		// const { chocolat } = props.attributes.chocolat;
-		// const chocolat = props.attributes.className === 'has-chocolat-wrapper' ? true : false;
 		const { chocolat } = props.attributes;
-	
 		if ( chocolat ) {
 			props.attributes.className = 'has-chocolat-wrapper';
 		}

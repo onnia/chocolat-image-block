@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Chocolat image block
- * Description: Example how to extend an existing Gutenberg block.
- * Author: Team Jazz, Liip AG
- * Author URI: https://liip.ch
+ * Description: Extend an existing Gutenberg image block with image chocolat wrapper.
+ * Author: Onni Aaltonen
+ * Author URI: https://onniaaltonen.com
  * Version: 1.0.0
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
@@ -18,12 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-/**
- * wp_enqueue_script('chocolat-js', get_stylesheet_directory_uri() . '/Chocolat-0.4.19/src/js/jquery.chocolat.js', array('jquery'));
-  * wp_enqueue_script('chocolat-js', get_stylesheet_directory_uri() . '/Chocolat-1.0.4/dist/js/chocolat.iife.js');
-  
- */
-
 add_action( 'enqueue_block_editor_assets', 'extend_block_example_enqueue_block_editor_assets' );
 
 function extend_block_example_enqueue_block_editor_assets() {
@@ -37,11 +31,29 @@ function extend_block_example_enqueue_block_editor_assets() {
     );
 }
 
+add_action('wp_enqueue_scripts', 'enqueue_scripts', 20);
 
-// functions.php
+function enqueue_scripts() {
+    wp_enqueue_script('lazyload', 'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.6.0/lazyload.min.js');
+    wp_enqueue_script(
+        'chocolat-js',
+        esc_url( plugins_url( '/dist/chocolat-image-block.js', __FILE__ ) ),
+        [],
+        '1.0.0',
+        true,
+    );
+    //  get_stylesheet_directory_uri() . '/Chocolat-1.0.4/dist/js/chocolat.iife.js');
+    // dd(get_stylesheet_directory_uri());
+}
+
+
+/**
+ * @param string $block_content
+ * @param array $block Block details.
+ */
 function wporg_block_wrapper( $block_content, $block ) {
 
-	if ( $block['blockName'] === 'core/image' && isset($block['attrs']['spacing']) && !empty($block['attrs']['spacing'])) {
+	if ( $block['blockName'] === 'core/image' && isset($block['attrs']['chocolat']) && !empty($block['attrs']['chocolat'])) {
         $media_id   = $block['attrs']['id'];
         return get_choco_html($media_id);
     }
@@ -52,9 +64,33 @@ function wporg_block_wrapper( $block_content, $block ) {
 add_filter( 'render_block', 'wporg_block_wrapper', 10, 2 );
 
 
+/**
+ * @param int $media_id
+ */
+function get_choco_html($media_id) {
 
-function getimagedata($id) {
-	$imagePost 	= get_post($id);
+    $data       = getimagedata($media_id);
+    $output     = '';
+    $output     .= "<a class=' chocolat-image " . $data->col . " " . $data->vertical . "' href='" . $data->original . "' title='" . $data->title . "'>";
+    $output     .= "<picture>";
+    if ($data->col == 'col-md-12') {
+      $data->medium = $data->original;
+    }
+
+    $output .= "<source data-srcset='" . $data->large . "' media=\"(max-width: 767px)\">";
+    $output .= "<source data-srcset='" . $data->medium . "' media=\"(min-width: 768px)\">";
+    $output .= "<img width='".$data->w."' height='".$data->h."' class='animated fadeIn ' alt='" . $data->alt . "' data-src='" . $data->medium . "' title='" . $data->title . "' src='" .  $data->mini_image ."' >";
+    $output .= "</picture>";
+    $output .= "</a>";
+  
+    return $output;
+}
+
+/** 
+ * @param int $media_id
+ */
+function getimagedata($media_id) {
+	$imagePost 	= get_post($media_id);
 	$alt 		= get_post_meta($imagePost->ID, '_wp_attachment_image_alt', TRUE);
     $meta 		= get_post_meta($imagePost->ID, '_wp_attachment_metadata', TRUE);
     $title 		= $imagePost->post_excerpt;
@@ -62,7 +98,7 @@ function getimagedata($id) {
     $original 	= wp_get_attachment_image_src($imagePost->ID, 'original')[0];
     $large 		= wp_get_attachment_image_src($imagePost->ID, 'large')[0];
     $medium 	= wp_get_attachment_image_src($imagePost->ID, 'medium')[0];
-	$mini_image = get_mini_image($id);
+	$mini_image = get_mini_image($media_id);
 
     $w 			= $meta['width'];
     $h 			= $meta['height'];
@@ -100,23 +136,4 @@ function getimagedata($id) {
 		'imagePost' 	=> $imagePost,
 	];
 
-}
-
-function get_choco_html($media_id) {
-
-    $data       = getimagedata($media_id);
-    $output     = '';
-    $output     .= "<a class=' chocolat-image " . $data->col . " " . $data->vertical . "' href='" . $data->original . "' title='" . $data->title . "'>";
-    $output     .= "<picture>";
-    if ($data->col == 'col-md-12') {
-      $data->medium = $data->original;
-    }
-
-    $output .= "<source data-srcset='" . $data->large . "' media=\"(max-width: 767px)\">";
-    $output .= "<source data-srcset='" . $data->medium . "' media=\"(min-width: 768px)\">";
-    $output .= "<img width='".$data->w."' height='".$data->h."' class='animated fadeIn ' alt='" . $data->alt . "' data-src='" . $data->medium . "' title='" . $data->title . "' src='" .  $data->mini_image ."' >";
-    $output .= "</picture>";
-    $output .= "</a>";
-  
-    return $output;
 }

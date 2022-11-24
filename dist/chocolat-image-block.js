@@ -816,9 +816,7 @@ var withSpacingControl = createHigherOrderComponent(function (BlockEdit) {
     // Do nothing if it's another block than our defined ones.
     if (!enableSpacingControlOnBlocks.includes(props.name)) {
       return React.createElement(BlockEdit, props);
-    } // const { chocolat } = props.attributes.chocolat;
-    // const chocolat = props.attributes.className === 'has-chocolat-wrapper' ? true : false;
-
+    }
 
     var chocolat = props.attributes.chocolat;
 
